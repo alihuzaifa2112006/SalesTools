@@ -33,7 +33,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen mesh-gradient flex items-center justify-center p-6">
+    <div className="min-h-[100dvh] mesh-gradient flex items-center justify-center p-4 sm:p-6">
       <div className="absolute inset-0 grid-overlay opacity-30" />
 
       <div className="relative w-full max-w-md">
@@ -51,7 +51,7 @@ export default function LoginForm() {
           </p>
         </div>
 
-        <div className="rounded-2xl border border-neutral-200/80 bg-white/80 backdrop-blur-xl p-8 shadow-xl shadow-neutral-900/[0.05]">
+        <div className="rounded-2xl border border-neutral-200/80 bg-white/80 backdrop-blur-xl p-6 sm:p-8 shadow-xl shadow-neutral-900/[0.05]">
           <form onSubmit={handleSubmit} className="space-y-5">
             {error && (
               <div className="rounded-xl bg-red-50 border border-red-100 px-4 py-3 text-sm text-red-600">

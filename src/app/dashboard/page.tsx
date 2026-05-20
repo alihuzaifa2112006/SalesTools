@@ -37,12 +37,12 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8 animate-fade-in">
+    <div className="space-y-6 sm:space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-neutral-900">
           Dashboard
         </h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <p className="mt-1 text-xs sm:text-sm text-neutral-500">
           Your sales cockpit — Tricon Studios Marketing & Sales
         </p>
       </div>
@@ -133,7 +133,7 @@ export default function DashboardPage() {
                 (item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between rounded-xl border border-neutral-100 px-4 py-3"
+                    className="flex flex-col gap-2 rounded-xl border border-neutral-100 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
                   >
                     <div>
                       <p className="text-sm font-medium text-neutral-900">

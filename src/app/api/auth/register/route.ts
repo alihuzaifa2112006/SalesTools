@@ -8,9 +8,15 @@ import { setAuthCookies } from "@/lib/auth/cookies";
 import { registerSchema, zodFirstError } from "@/lib/validations";
 import { slugify, generateInviteToken } from "@/lib/utils";
 import { jsonError } from "@/lib/auth/session";
+import { assertEnvConfigured } from "@/lib/env";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
+    assertEnvConfigured();
+
     const body = await request.json();
     const parsed = registerSchema.safeParse(body);
 

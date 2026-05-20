@@ -21,7 +21,7 @@ interface SalesChartProps {
 
 export function SalesChart({ data }: SalesChartProps) {
   return (
-    <ResponsiveContainer width="100%" height={280}>
+    <ResponsiveContainer width="100%" height={240}>
       <BarChart data={data} margin={{ top: 5, right: 5, left: -20, bottom: 5 }}>
         <CartesianGrid strokeDasharray="3 3" stroke="#f5f5f5" vertical={false} />
         <XAxis
@@ -58,14 +58,14 @@ interface SourceChartProps {
 export function SourceChart({ data }: SourceChartProps) {
   if (data.length === 0) {
     return (
-      <div className="flex h-[280px] items-center justify-center text-sm text-neutral-400">
+      <div className="flex h-[200px] sm:h-[280px] items-center justify-center text-sm text-neutral-400">
         No lead source data yet
       </div>
     );
   }
 
   return (
-    <ResponsiveContainer width="100%" height={280}>
+    <ResponsiveContainer width="100%" height={240}>
       <PieChart>
         <Pie
           data={data}

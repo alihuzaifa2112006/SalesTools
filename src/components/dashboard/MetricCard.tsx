@@ -21,7 +21,7 @@ export default function MetricCard({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-neutral-200/80 bg-white p-6",
+        "relative overflow-hidden rounded-2xl border border-neutral-200/80 bg-white p-4 sm:p-6",
         "shadow-sm shadow-neutral-900/[0.03]",
         className
       )}
@@ -30,7 +30,7 @@ export default function MetricCard({
       <div className="relative flex items-start justify-between">
         <div>
           <p className="text-sm font-medium text-neutral-500">{title}</p>
-          <p className="mt-2 text-3xl font-semibold tracking-tight text-neutral-900">
+          <p className="mt-1.5 sm:mt-2 text-2xl sm:text-3xl font-semibold tracking-tight text-neutral-900 break-words">
             {value}
           </p>
           {subtitle && (

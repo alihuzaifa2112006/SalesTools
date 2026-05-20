@@ -6,9 +6,15 @@ import { signAccessToken, signRefreshToken } from "@/lib/auth/jwt";
 import { setAuthCookies } from "@/lib/auth/cookies";
 import { loginSchema, zodFirstError } from "@/lib/validations";
 import { jsonError } from "@/lib/auth/session";
+import { assertEnvConfigured } from "@/lib/env";
+
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
 
 export async function POST(request: NextRequest) {
   try {
+    assertEnvConfigured();
+
     const body = await request.json();
     const parsed = loginSchema.safeParse(body);
 
@@ -54,6 +60,22 @@ export async function POST(request: NextRequest) {
     return setAuthCookies(response, accessToken, refreshToken);
   } catch (error) {
     console.error("Login error:", error);
+    const msg = error instanceof Error ? error.message : "Unknown error";
+
+    if (msg.includes("Missing environment") || msg.includes("not configured")) {
+      return jsonError(
+        "Server configuration incomplete. Contact admin or check Vercel env vars.",
+        503
+      );
+    }
+
+    if (msg.includes("MongoServerSelectionError") || msg.includes("ECONNREFUSED")) {
+      return jsonError(
+        "Database connection failed. Check MongoDB Atlas network access.",
+        503
+      );
+    }
+
     return jsonError("Login failed. Please try again.", 500);
   }
 }

@@ -172,17 +172,18 @@ export default function LeadsTable() {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">
+    <div className="space-y-4 sm:space-y-6">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-neutral-900">
             Lead Tracker
           </h1>
-          <p className="mt-1 text-sm text-neutral-500">
+          <p className="mt-1 text-xs sm:text-sm text-neutral-500">
             Manage clients from Instagram, Facebook, Google Maps & more
           </p>
         </div>
         <Button
+          className="w-full sm:w-auto shrink-0"
           onClick={() => {
             setSelectedLead(null);
             resetForm();
@@ -243,9 +244,9 @@ export default function LeadsTable() {
         )}
       </Card>
 
-      <Card className="overflow-hidden !p-0">
+      <Card className="overflow-hidden !p-0 hidden md:block">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[640px]">
             <thead>
               <tr className="border-b border-neutral-100 bg-neutral-50/50">
                 <th className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-neutral-500">
@@ -347,28 +348,96 @@ export default function LeadsTable() {
         </div>
       </Card>
 
+      {/* Mobile card list */}
+      <div className="space-y-3 md:hidden">
+        {loading ? (
+          <Card className="!p-8 text-center text-sm text-neutral-400">
+            Loading leads...
+          </Card>
+        ) : leads.length === 0 ? (
+          <Card className="!p-8 text-center text-sm text-neutral-400">
+            No leads found. Add your first lead to get started.
+          </Card>
+        ) : (
+          leads.map((lead) => (
+            <button
+              key={lead._id}
+              type="button"
+              onClick={() => openEdit(lead)}
+              className="w-full rounded-2xl border border-neutral-200/80 bg-white p-4 text-left shadow-sm transition active:scale-[0.99]"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-neutral-900">
+                    {lead.clientName}
+                  </p>
+                  <p className="mt-0.5 flex items-center gap-1 text-xs text-neutral-500">
+                    <MapPin className="h-3 w-3 shrink-0" />
+                    <span className="truncate">
+                      {lead.city}, {lead.country}
+                    </span>
+                  </p>
+                </div>
+                {getStatusBadge(lead.status)}
+              </div>
+
+              <div className="mt-3 flex flex-wrap gap-2">
+                <span className="rounded-full bg-neutral-100 px-2 py-0.5 text-[11px] capitalize text-neutral-600">
+                  {lead.source.replace("_", " ")}
+                </span>
+                {getPaymentBadge(lead.paymentStatus)}
+              </div>
+
+              <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-neutral-500">
+                {lead.whatsapp && (
+                  <span className="flex items-center gap-1">
+                    <MessageCircle className="h-3 w-3" />
+                    {lead.whatsapp}
+                  </span>
+                )}
+                <span className="flex items-center gap-1">
+                  <DollarSign className="h-3 w-3" />
+                  {formatCurrency(lead.paymentReceived)} / {formatCurrency(lead.totalValue)}
+                </span>
+                {lead.nextFollowUpAt && (
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {formatRelativeDate(lead.nextFollowUpAt)}
+                  </span>
+                )}
+              </div>
+            </button>
+          ))
+        )}
+      </div>
+
       {showModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/20 backdrop-blur-sm p-4">
-          <div className="w-full max-w-lg rounded-2xl border border-neutral-200 bg-white p-6 shadow-xl">
-            <div className="flex items-center justify-between mb-6">
+        <div className="fixed inset-0 z-[60] flex items-end sm:items-center justify-center bg-black/30 backdrop-blur-sm sm:p-4">
+          <div className="flex max-h-[95dvh] w-full flex-col rounded-t-2xl sm:rounded-2xl border border-neutral-200 bg-white shadow-xl sm:max-w-lg">
+            <div className="flex shrink-0 items-center justify-between border-b border-neutral-100 px-4 py-4 sm:px-6 sm:border-0 sm:pb-0">
               <h2 className="text-lg font-semibold text-neutral-900">
                 {selectedLead ? "Edit Lead" : "Add New Lead"}
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="rounded-lg p-1 text-neutral-400 hover:bg-neutral-100"
+                className="rounded-lg p-1.5 text-neutral-400 hover:bg-neutral-100"
+                aria-label="Close"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <form onSubmit={handleSubmit} className="space-y-4 max-h-[60vh] overflow-y-auto pr-1">
+            <form
+              onSubmit={handleSubmit}
+              className="flex min-h-0 flex-1 flex-col overflow-hidden"
+            >
+              <div className="space-y-4 overflow-y-auto px-4 py-4 sm:px-6 sm:py-2 flex-1">
               <Input
                 label="Client Name"
                 value={form.clientName}
                 onChange={(e) => setForm({ ...form, clientName: e.target.value })}
                 required
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
                   label="WhatsApp"
                   value={form.whatsapp}
@@ -388,7 +457,7 @@ export default function LeadsTable() {
                 }
                 options={LEAD_SOURCES}
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
                   label="Country"
                   value={form.country}
@@ -410,7 +479,7 @@ export default function LeadsTable() {
                 }
                 options={LEAD_STATUSES}
               />
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                 <Input
                   label="Total Value ($)"
                   type="number"
@@ -447,16 +516,18 @@ export default function LeadsTable() {
                   className="w-full rounded-xl border border-neutral-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900/10"
                 />
               </div>
-              <div className="flex gap-3 pt-2">
-                <Button type="submit" className="flex-1">
-                  {selectedLead ? "Update Lead" : "Create Lead"}
-                </Button>
+              </div>
+              <div className="flex shrink-0 flex-col-reverse gap-2 border-t border-neutral-100 p-4 sm:flex-row sm:gap-3 sm:border-0 sm:px-6 sm:pb-6 safe-bottom">
                 <Button
                   type="button"
                   variant="secondary"
+                  className="w-full sm:w-auto"
                   onClick={() => setShowModal(false)}
                 >
                   Cancel
+                </Button>
+                <Button type="submit" className="w-full flex-1">
+                  {selectedLead ? "Update Lead" : "Create Lead"}
                 </Button>
               </div>
             </form>

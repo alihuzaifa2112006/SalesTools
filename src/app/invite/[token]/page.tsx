@@ -38,7 +38,7 @@ export default function InvitePage() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen mesh-gradient flex items-center justify-center">
+      <div className="min-h-[100dvh] mesh-gradient flex items-center justify-center">
         <p className="text-sm text-neutral-500">Loading...</p>
       </div>
     );
@@ -46,20 +46,20 @@ export default function InvitePage() {
 
   if (!user) {
     return (
-      <div className="min-h-screen mesh-gradient flex items-center justify-center p-6">
-        <div className="w-full max-w-md text-center rounded-2xl border border-neutral-200/80 bg-white/80 backdrop-blur-xl p-8 shadow-xl">
+      <div className="min-h-[100dvh] mesh-gradient flex items-center justify-center p-4 sm:p-6">
+        <div className="w-full max-w-md text-center rounded-2xl border border-neutral-200/80 bg-white/80 backdrop-blur-xl p-6 sm:p-8 shadow-xl">
           <h1 className="text-xl font-semibold text-neutral-900">
             Workspace Invitation
           </h1>
           <p className="mt-3 text-sm text-neutral-500">
             Sign in or create an account to join this workspace.
           </p>
-          <div className="mt-6 flex gap-3 justify-center">
-            <Link href={`/login?redirect=/invite/${token}`}>
-              <Button>Sign In</Button>
+          <div className="mt-6 flex flex-col gap-2 sm:flex-row sm:justify-center">
+            <Link href={`/login?redirect=/invite/${token}`} className="w-full sm:w-auto">
+              <Button className="w-full">Sign In</Button>
             </Link>
-            <Link href={`/register`}>
-              <Button variant="secondary">Register</Button>
+            <Link href={`/register`} className="w-full sm:w-auto">
+              <Button variant="secondary" className="w-full">Register</Button>
             </Link>
           </div>
         </div>
@@ -68,8 +68,8 @@ export default function InvitePage() {
   }
 
   return (
-    <div className="min-h-screen mesh-gradient flex items-center justify-center p-6">
-      <div className="w-full max-w-md text-center rounded-2xl border border-neutral-200/80 bg-white/80 backdrop-blur-xl p-8 shadow-xl">
+    <div className="min-h-[100dvh] mesh-gradient flex items-center justify-center p-4 sm:p-6">
+      <div className="w-full max-w-md text-center rounded-2xl border border-neutral-200/80 bg-white/80 backdrop-blur-xl p-6 sm:p-8 shadow-xl">
         {success ? (
           <>
             <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
@@ -96,7 +96,7 @@ export default function InvitePage() {
                 {error}
               </div>
             )}
-            <Button className="mt-6" onClick={handleJoin} loading={loading}>
+            <Button className="mt-6 w-full sm:w-auto" onClick={handleJoin} loading={loading}>
               Accept Invitation
             </Button>
           </>

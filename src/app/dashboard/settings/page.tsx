@@ -36,12 +36,12 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="space-y-8 max-w-2xl">
+    <div className="space-y-6 sm:space-y-8 w-full max-w-2xl">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight text-neutral-900">
+        <h1 className="text-xl sm:text-2xl font-semibold tracking-tight text-neutral-900">
           Settings
         </h1>
-        <p className="mt-1 text-sm text-neutral-500">
+        <p className="mt-1 text-xs sm:text-sm text-neutral-500">
           Manage your workspace and team invitations
         </p>
       </div>
@@ -77,13 +77,13 @@ export default function SettingsPage() {
           </p>
 
           {inviteUrl ? (
-            <div className="flex gap-2">
+            <div className="flex flex-col gap-2 sm:flex-row">
               <input
                 value={inviteUrl}
                 readOnly
-                className="flex-1 rounded-xl border border-neutral-200 px-4 py-2.5 text-xs text-neutral-600 bg-neutral-50"
+                className="min-w-0 flex-1 rounded-xl border border-neutral-200 px-4 py-2.5 text-xs text-neutral-600 bg-neutral-50"
               />
-              <Button variant="secondary" onClick={copyInvite}>
+              <Button variant="secondary" onClick={copyInvite} className="w-full sm:w-auto shrink-0">
                 {copied ? (
                   <Check className="h-4 w-4 text-emerald-600" />
                 ) : (
@@ -107,7 +107,7 @@ export default function SettingsPage() {
           {workspaces.map((ws) => (
             <div
               key={ws.id}
-              className="flex items-center justify-between rounded-xl border border-neutral-100 px-4 py-3"
+              className="flex flex-col gap-2 rounded-xl border border-neutral-100 px-4 py-3 sm:flex-row sm:items-center sm:justify-between"
             >
               <div>
                 <p className="text-sm font-medium text-neutral-900">{ws.name}</p>

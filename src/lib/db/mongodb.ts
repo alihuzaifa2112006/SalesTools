@@ -1,11 +1,7 @@
 import mongoose from "mongoose";
+import { getMongoUri } from "@/lib/env";
 
-const MONGODB_URI = process.env.MONGODB_URI!;
 const MONGODB_DB = process.env.MONGODB_DB || "SalesTools";
-
-if (!MONGODB_URI) {
-  throw new Error("Please define MONGODB_URI in .env.local");
-}
 
 interface MongooseCache {
   conn: typeof mongoose | null;
@@ -21,6 +17,8 @@ const cached: MongooseCache = global.mongooseCache ?? { conn: null, promise: nul
 global.mongooseCache = cached;
 
 export async function connectDB(): Promise<typeof mongoose> {
+  const MONGODB_URI = getMongoUri();
+
   if (cached.conn) {
     return cached.conn;
   }
@@ -30,15 +28,16 @@ export async function connectDB(): Promise<typeof mongoose> {
       dbName: MONGODB_DB,
       bufferCommands: false,
       maxPoolSize: 10,
-      serverSelectionTimeoutMS: 10000,
+      serverSelectionTimeoutMS: 15000,
+      socketTimeoutMS: 45000,
     });
   }
 
   try {
     cached.conn = await cached.promise;
-    console.log(`MongoDB connected to database: ${MONGODB_DB}`);
   } catch (error) {
     cached.promise = null;
+    cached.conn = null;
     throw error;
   }
 
